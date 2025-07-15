@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 export default function Home() {
   const [input, setInput] = useState('');
-  const [result, setResult] = useState<{ sentiment: any; keywords: any } | null>(null);
+  const [result, setResult] = useState<{ sentiment: unknown; keywords: unknown } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -31,8 +31,12 @@ export default function Home() {
           keywords: json.keywords,
         });
       }
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error');
+      }
     }
 
     setLoading(false);
